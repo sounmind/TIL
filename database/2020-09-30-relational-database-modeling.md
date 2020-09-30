@@ -72,7 +72,7 @@
       - 각 댓글은 반드시 저자가 있어야 한다. 댓글에게는 저자가 필수(Mandatory)이다. 관계선에서 저자 쪽에 작대기가 그어져 있다.
     - ERD 관계선을 그릴 때 좋은 이고잉님이 만드신 프로그램 [링크](http://erd.yah.ac)
   - 나의 최종 결과물
-    - ![ERD](https://github.com/sounmind/TIL/blob/master/images/2020-09-30-ERD.PNG?raw=true)
+    - ![ERD](https://github.com/sounmind/TIL/blob/master/images/2020-09-30-ERD.png?raw=true)
 
 ### 3. 논리적 데이터 모델링
 
@@ -82,7 +82,7 @@
   - Entity → Table | Attribute → Column | Relation → PK, FK
   - [ER Master](http://ermaster.sourceforge.net/) 도구로 사용하기
   - 1대1 관계(저자, 휴면저자) 일 때, 부모 테이블(PK), 자식 테이블로(FK) 설정하면 좋다.
-    - ![ERM](https://github.com/sounmind/TIL/blob/master/images/2020-09-30-ERM.PNG?raw=true)
+    - ![ERM](https://github.com/sounmind/TIL/blob/master/images/2020-09-30-ERM.png?raw=true)
 
 - 정규화
   - 단계별로 정규화 시킨다.
