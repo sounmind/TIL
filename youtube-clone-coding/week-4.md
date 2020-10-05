@@ -111,3 +111,18 @@
 
 - `npm install @babel/polyfill` → 브라우저가 이해하지 못하는 자바스크립트 부분을 채워주는 역할
 - `"dev:assets": "cross-env WEBPACK_ENV=development webpack -w"`와 같이 `-w`(watch) 를 붙이면 항상 변화를 감지한다.
+
+### #4.3 ES6 with Webpack
+
+---
+
+- `npm install @babel/polyfill` → 브라우저가 이해하지 못하는 자바스크립트 부분을 채워주는 역할
+- `"dev:assets": "cross-env WEBPACK_ENV=development webpack -w"`와 같이 `-w`(watch) 를 붙이면 항상 변화를 감지한다.
+
+### 퀴즈를 풀며 배운 것
+
+---
+
+- **Webpack은** A module bundler이다.
+- `webpack.config.js`에서 `module`의 역할은 각각 다른 파일 포맷에 대한 변환을 할 수 있도록 하는 것이다.
+- 어떻게? `module`에서 `rules` 안에 `loader`를 다운로드하고 순서(아래에서부터 위로)에 맞게 작성해주면 된다.
