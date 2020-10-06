@@ -6,7 +6,7 @@
 
 ---
 
-[6주 과정 진도표](https://nomadcoders.co/faq/schedule-vanillajs) | 2020-9-14 ~ 2020-10-23
+[2주 과정 진도표](https://nomadcoders.co/faq/schedule-vanillajs) | 2020-10-05 ~ 2020-10-18
 
 # 20-10-05 | 1.1 ~ 1.5 | Quiz
 
@@ -224,6 +224,61 @@
         ```
 
     - 이러한 이유로, 그들의 범위(전역 코드의 상단 그리고 함수 코드의 상단) 상단에 변수를 항상 선언하기를 권장합니다. 그러면 변수는 함수 범위 (지역)이 되며, 스코프 체인으로 해결될 것이 분명합니다.
+
+# 20-10-07 | Code Challenge | Objects, Arrays and Events
+
+---
+
+- [이벤트 참조](https://developer.mozilla.org/ko/docs/Web/Events)
+    - 마우스 이벤트 enter, over의 차이점은?
+        - enter는 진입했을 때 한 번만 발생한다.
+        - over는 진입하고 나서도 계속 발생한다.
+
+### 챌린지를 통해 배운 것: 선언 순서... 미친...
+
+---
+
+- 계속 이게 왜 안 되지? 의문이었는데 선언 순서 때문이었다. 그리고 함수 이름과 함수 이름에 괄호를 달아줄 때 차이 또한 잘 알아야 한다.
+
+```jsx
+const greeting = document.querySelector(".greeting");
+
+function handleResize() {
+  console.log("resized");
+  greeting.innerHTML = "It has been resized!";
+  greeting.style.color = `${colors[1]}`;
+}
+
+function handleMouseEnter() {
+  console.log("Mouse Enter");
+  greeting.innerHTML = "Mouse is inside of me!";
+  greeting.style.color = `${colors[2]}`;
+}
+
+function handleMouseOut() {
+  console.log("Mouse Out");
+  greeting.innerHTML = "Mouse is gone!";
+  greeting.style.color = `${colors[3]}`;
+}
+
+function handleClickRight() {
+  console.log("Right Click");
+  greeting.innerHTML = "Right Clicked!";
+  greeting.style.color = `${colors[4]}`;
+}
+
+const superEventHandler = {
+  resize: handleResize,
+  mouseEnter: handleMouseEnter,
+  mouseOut: handleMouseOut,
+  clickRight: handleClickRight
+};
+
+window.addEventListener("resize", superEventHandler.resize);
+greeting.addEventListener("mouseenter", superEventHandler.mouseEnter);
+greeting.addEventListener("mouseout", superEventHandler.mouseOut);
+window.addEventListener("contextmenu", superEventHandler.clickRight);
+```
 
 ## 참고 자료
 
