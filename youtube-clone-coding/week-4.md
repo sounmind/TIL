@@ -126,3 +126,12 @@
 - **Webpack은** A module bundler이다.
 - `webpack.config.js`에서 `module`의 역할은 각각 다른 파일 포맷에 대한 변환을 할 수 있도록 하는 것이다.
 - 어떻게? `module`에서 `rules` 안에 `loader`를 다운로드하고 순서(아래에서부터 위로)에 맞게 작성해주면 된다.
+
+# 20-10-06 | Code Challenge: Multer, FileSystem
+
+---
+
+- 입력 폼을 만들어 텍스트 파일을 입력하면 Multer로 텍스트파일을 프로젝트 폴더에 저장하고, nodejs의 [fs(파일 시스템](https://nodejs.org/docs/latest-v13.x/api/fs.html)) API를 이용해 텍스트 파일 내용을 읽어 내용을 웹페이지 화면에 표시해주면 된다.
+- 배운 것
+    1. multer 복습. "아, 이런 마법 같은 방법으로 파일이 저장되는 구나."
+    2. 파일 시스템의 동작 원리와 경로 설정의 중요성.

@@ -51,6 +51,180 @@
             - 만약 scirpt들이 각각의 스크립트에 의존하지 않고 독립적으로 파싱되도 상관없다면, `async` 를 사용한다.
             - 먄약 sciprt들이 의존하고 하나의 스크립트가 파싱될때까지 기다려야 한다면, `defer` 를 사용하고 각각의 `<script>` 태그들을 실행되길 원하는 순서대로 작성한다.
 
+# 20-10-06 | 1.6 ~ 1.10 | Quiz
+
+---
+
+## [let](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/let), [const](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/const), [var](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/var) 에 대해 알기
+
+---
+
+[https://developer.mozilla.org/](https://developer.mozilla.org/) 에서 그대로 옮긴 것이다.
+
+### let
+
+---
+
+- `let`은 변수가 선언된 블록, 구문 또는 표현식 내에서만 유효한 변수를 선언한다. 이는 `var` 키워드가 블록 범위를 무시하고 전역 변수나 함수 지역 변수로 선언되는 것과 다른 점이다.
+- stackoverflow | [왜 let 을 사용해야 하는가?](https://stackoverflow.com/questions/37916940/why-was-the-name-let-chosen-for-block-scoped-variable-declarations-in-javascri)
+- **유효 범위 규칙**
+    - let 으로 선언된 변수는 변수가 선언된 블록 내에서만 유효하며, 당연하지만 하위 블록에서도 유효하다. 이러한 점에서는 let 과 var는 유사하지만, var는 함수 블록 이외의 블록은 무시하고 선언된다는 점이 다르다.
+
+        ```jsx
+        function varTest() {
+          var x = 1;
+          if (true) {
+            var x = 2;  // 상위 블록과 같은 변수!
+            console.log(x);  // 2
+          }
+          console.log(x);  // 2
+        }
+
+        function letTest() {
+          let x = 1;
+          if (true) {
+            let x = 2;  // 상위 블록과 다른 변수
+            console.log(x);  // 2
+          }
+          console.log(x);  // 1
+        }
+        ```
+
+- **비공개 변수 모사**
+    - [생성자](https://developer.mozilla.org/en-US/docs/Glossary/Constructor)와 함께 사용하여 [클로저](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)를 사용하지 않고 비공개 변수를 만들고 접근할 수 있다.
+
+        ```jsx
+        var Thing;
+
+        {
+          let privateScope = new WeakMap();
+          let counter = 0;
+
+          Thing = function() {
+            this.someProperty = 'foo';
+            
+            privateScope.set(this, {
+              hidden: ++counter,
+            });
+          };
+
+          Thing.prototype.showPublic = function() {
+            return this.someProperty;
+          };
+
+          Thing.prototype.showPrivate = function() {
+            return privateScope.get(this).hidden;
+          };
+        }
+
+        console.log(typeof privateScope);
+        // "undefined"
+
+        var thing = new Thing();
+
+        console.log(thing);
+        // Thing {someProperty: "foo"}
+
+        thing.showPublic();
+        // "foo"
+
+        thing.showPrivate();
+        // 1
+        ```
+
+    - 임시적인 사각 지역과 오류
+
+        ```jsx
+        if (x) {
+          let foo;
+          let foo; // SyntaxError thrown.
+        }
+        ```
+
+        - ECMAScript 2015에서는let은 선언 끌어올리기의 적용을 받지 않습니다. 이는 let 선언이 현재 실행되는 구간의 최상위로 옮겨지지 않는다는 것을 의미합니다. 따라서 변수가 초기화(선언)되기 전에 참조할 경우 ReferenceError가 발생합니다.(var로 선언된 변수는 undefined 값을 가지는 것과는 대조적입니다.) "임시적인 사각 지역"은 블록 시작 부분부터 변수 선언이 실행되기 전까지 입니다.
+        - (let들의 정의가 평가되기까지 초기화가 되지 않는다는 의미이지. 호이스팅이 되지않아 정의가 되지 않는다는 의미와는 다르다고 생각함_헷갈리면 안된다.)
+
+            ```jsx
+            function do_something() {
+              console.log(bar); // undefined
+              console.log(foo); // ReferenceError
+              var bar = 1;
+              let foo = 2;
+            }
+            ```
+
+### const
+
+---
+
+- 이 선언은 선언된 함수에 전역 또는 지역일 수 있는 상수를 만듭니다. 상수 초기자(initializer)가 필요합니다. 즉 선언되는 같은 문에 그 값을 지정해야 합니다(이는 나중에 변경될 수 없는 점을 감안하면 말이 됩니다).
+- 상수는 `[let](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/let)` 문을 사용하여 정의된 변수와 마찬가지로 블록 범위(block-scope)입니다. 상수의 값은 재할당을 통해 바뀔 수 없고 재선언될 수 없습니다.
+- `[let](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/let)`에 적용한 "[일시적 사각 지대](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let)"에 관한 모든 고려는, `const`에도 적용합니다.
+- 상수는 같은 범위의 상수 또는 변수와 그 이름을 공유할 수 없습니다.
+
+### var
+
+---
+
+- 어디에 선언이 되어있든 간에 변수들은 어떠한 코드가 실행되기 전에 처리가 됩니다. var로 선언된 변수의 범위는 현재 실행 문맥인데, 그 문맥은 둘러싼 함수, 혹은 함수의 외부에 전역으로 선언된 변수도 될 수 있습니다.
+- 선언된 변수들의 값 할당은 할당이 실행될 때 전역변수(이것은 전역 오브젝트의 프로퍼티가 됩니다)처럼 생성이 됩니다. 선언된 변수들과 선언되지 않은 변수들의 차이점은 다음과 같습니다:
+    1. 선언된 변수들은 변수가 선언된 실행 콘텍스트(execution context) 안에서 만들어집니다. 선언되지 않은 변수들은 항상 전역변수 입니다.
+
+        ```jsx
+        function x() {
+          y = 1;   // strict 모드에서는 ReferenceError를 출력합니다.
+          var z = 2;
+        }
+
+        x();
+
+        console.log(y); // 로그에 "1" 출력합니다.
+        console.log(z); // ReferenceError: z is not defined outside x를 출력합니다.
+        ```
+
+    2. 선언된 변수들은 어떠한 코드가 실행되기 전에 만들어집니다. 선언되지 않은 변수들은 변수들을 할당하는 코드가 실행되기 전까지는 존재하지 않습니다.
+
+        ```jsx
+        console.log(a);                // ReferenceError를 출력합니다.
+        console.log('still going...'); // 결코 실행되지 않습니다.
+        ```
+
+        ```jsx
+        var a;
+        console.log(a);                // 브라우저에 따라 로그에 "undefined" 또는 "" 출력합니다.
+        console.log('still going...'); // 로그에 "still going..." 출력합니다.
+        ```
+
+    3. 선언된 변수들은 변수들의 실행 콘텍스트(execution context)의 프로퍼티를 변경되지 않습니다. 선언되지 않은 변수들은 변경 가능합니다. (e.g 삭제 될 수도 있습니다.)
+
+        ```jsx
+        var a = 1;
+        b = 2;
+
+        delete this.a; // strict 모드에서는 TypeError를 출력합니다. 그렇지 않으면 자동적으로 실패합니다.
+        delete this.b;
+
+        console.log(a, b); // ReferenceError를 출력합니다. 
+        // 'b' 프로퍼티는 삭제되었고, 어디에도 존재하지 않습니다.
+        ```
+
+    - 이러한 세가지 다른 점 때문에, 변수 선언 오류는 예기치 않은 결과로 이어질 가능성이 높습니다. 그러므로 함수 또는 전역 범위인지 여부와 상관없이, 항상 변수를 선언 하는 것을 추천합니다. 그리고 ECMAScript 5 안에 strict mode, 선언되지 않은 변수에 할당하면 오류를 출력합니다.
+- var 호이스팅(hoisting)
+    - 변수 선언들 (그리고 일반적인 선언)은 어느 코드가 실행 되기 전에 처리하기 때문에, 코드 안에서 어디서든 변수 선언은 최상위에 선언한 것과 동등합니다. 이것은 변수가 선언되기 전에 사용 될 수 있다는 것을 의미합니다. 변수 선언이 함수 또는 전역 코드의 상단에 이동하는 것과 같은 행동을 "호이스팅(hoisting)"이라고 불립니다.
+
+        ```jsx
+        bla = 2
+        var bla;
+        // ...
+
+        // 위 선언을 다음과 같이 암묵적으로 이해하면 됩니다:
+
+        var bla;
+        bla = 2;
+        ```
+
+    - 이러한 이유로, 그들의 범위(전역 코드의 상단 그리고 함수 코드의 상단) 상단에 변수를 항상 선언하기를 권장합니다. 그러면 변수는 함수 범위 (지역)이 되며, 스코프 체인으로 해결될 것이 분명합니다.
+
 ## 참고 자료
 
 ---
