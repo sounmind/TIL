@@ -133,5 +133,205 @@
 
 - 입력 폼을 만들어 텍스트 파일을 입력하면 Multer로 텍스트파일을 프로젝트 폴더에 저장하고, nodejs의 [fs(파일 시스템](https://nodejs.org/docs/latest-v13.x/api/fs.html)) API를 이용해 텍스트 파일 내용을 읽어 내용을 웹페이지 화면에 표시해주면 된다.
 - 배운 것
-    1. multer 복습. "아, 이런 마법 같은 방법으로 파일이 저장되는 구나."
-    2. 파일 시스템의 동작 원리와 경로 설정의 중요성.
+  1. multer 복습. "아, 이런 마법 같은 방법으로 파일이 저장되는 구나."
+  2. 파일 시스템의 동작 원리와 경로 설정의 중요성.
+
+# 20-10-07 | #6.0 ~ #6.5 | Quiz: 사용자 인증
+
+---
+
+### #6.0 Introduction to PassportJS | 사용자 인증을 위해 알아야 할 개념과 도구
+
+---
+
+- [Passportjs](http://www.passportjs.org/)
+  - [생활코딩 | Passportjs](https://www.opentutorials.org/course/3402)
+  - 여기서 `strategy`는 무엇인가?
+- '쿠키'란?
+  - [MDN | HTTP 쿠키](https://developer.mozilla.org/ko/docs/Web/HTTP/Cookies)
+- [Passport-Local Mongoose](https://github.com/saintedlama/passport-local-mongoose)
+
+### #6.1 Local Authentication with Passport part One
+
+---
+
+- passport-local-mongoose 설치
+- models/User.js 작성
+- init.js 에 작성한 Schema를 Import
+- passport passport-local 설치
+- ./passport.js 작성
+  - passport-local-mongoose가 제공하는 strategy 사용
+    - [createStrategy()](https://github.com/saintedlama/passport-local-mongoose#simplified-passportpassport-local-configuration)
+
+### #6.2 Local Authentication with Passport part Two
+
+---
+
+- Serialization 에 대한 passportjs의 문서 살펴보기
+
+  > serializeUser → 특정정보(field)를 쿠키에 담아 전달하기
+
+  > deserializeUser → 받은 쿠키로 사용자를 특정하기
+
+  ### Sessions
+
+  In a typical web application, the credentials used to authenticate a user will only be transmitted during the login request. If authentication succeeds, a session will be established and maintained via a cookie set in the user's browser.
+
+  Each subsequent request will not contain credentials, but rather the unique cookie that identifies the session. In order to support login sessions, Passport will serialize and deserialize `user` instances to and from the session.
+
+  ```
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+      done(err, user);
+    });
+  });
+
+  ```
+
+  In this example, only the user ID is serialized to the session, keeping the amount of data stored within the session small. When subsequent requests are received, this ID is used to find the user, which will be restored to `req.user`.
+
+  The serialization and deserialization logic is supplied by the application, allowing the application to choose an appropriate database and/or object mapper, without imposition by the authentication layer.
+
+[passport-local-mongoose](https://github.com/saintedlama/passport-local-mongoose#configure-passportpassport-local) 에서 de/serializeUser 함수를 제공해주기 때문에 Shorcut을 이용할 수 있다.
+
+- passport.js 작성하기
+- 사용자 인증 과정을 추가하기
+  - globalRouter.js 수정하기
+  - userController.js 수정하기
+
+> mongoDB에 사용자 id와 패스워드를 암호화해서 담는 것까지 완료. 아직 쿠키는 없다. 즉, 아직 로그인이 되지 않았다는 것.
+
+### #6.3 Loggin the User In
+
+---
+
+- userController.js 의 postJoin 함수를 미들웨어로 탈바꿈시키기
+- globalRouter에서 postJoin 다음에 postLogin을 작성
+- useController.js 에서 postLogin 작성
+
+  > 공식 문서 참고!
+
+  ## Redirects
+
+  A redirect is commonly issued after authenticating a request.
+
+  ```
+  app.post('/login',
+    passport.authenticate('local', { successRedirect: '/',
+                                     failureRedirect: '/login' }));
+
+  ```
+
+  In this case, the redirect options override the default behavior. Upon successful authentication, the user will be redirected to the home page. If authentication fails, the user will be redirected back to the login page for another attempt.
+
+> postJoin은 이메일, 패스워드 등의 정보들을 받아 사용자를 가입시키고, postLogin은 같은 정보를 가지고 사용자를 로그인 시킨다.
+
+- app.js 에서 각종 사용자 인증 관련 모듈 import
+
+  ```jsx
+  import express from "express";
+  import morgan from "morgan";
+  import helmet from "helmet";
+  import cookieParser from "cookie-parser";
+  import bodyParser from "body-parser"; // 이게 있어야 req 객체를 읽어들일 수 있음
+  import passport from "passport";
+  import "./passport";
+  import { localsMiddleware } from "./middlewares";
+  import userRouter from "./routers/userRouter";
+  import videoRouter from "./routers/videoRouter";
+  import globalRouter from "./routers/globalRouter";
+  import routes from "./routes";
+
+  const app = express();
+
+  app.use(helmet({ contentSecurityPolicy: false })); // 보안 약화
+  app.set("view engine", "pug"); // view
+
+  app.use("/static", express.static("static"));
+  app.use("/uploads", express.static("uploads")); // 프로젝트 안의 uploads 폴더를 찾아 파일 확인하는 미들웨어
+  app.use(cookieParser());
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.use(morgan("dev"));
+
+  app.use(passport.initialize()); // passport 실행
+  app.use(passport.session()); // 쿠키 정보에 해당하는 사용자 찾기 // 아직 세션 모듈을 설치하지 않았다.
+
+  app.use(localsMiddleware);
+
+  app.use(routes.home, globalRouter);
+  app.use(routes.users, userRouter);
+  app.use(routes.videos, videoRouter);
+
+  export default app;
+  ```
+
+### #6.4 Sessions on Express
+
+---
+
+- [express-session 설치](https://www.npmjs.com/package/express-session)
+- [세션은 무엇인가?](https://developer.mozilla.org/en-US/docs/Web/HTTP/Session)
+
+  > 세션이란 일정 시간동안 같은 사용자(정확하게 브라우저를 말한다)로 부터 들어오는 일련의 요구를 하나의 상태로 보고 그 상태를 일정하게 유지시키는 기술이라고 한다. 또한 여기서 일정 시간이란 방문자가 웹 브라우저를 통해 웹 서버에 접속한 시점으로부터 웹 브라우저를 종료함으로써 연결을 끝내는 시점을 말하며 즉, 방문자가 웹서버에 접속해 있는 상태를 하나의 단위로 보고 세션이라고 칭한다. [출처](https://88240.tistory.com/190)
+
+- app.js에 express-session import 하고 미들웨어로 선언.
+
+  - 옵션
+
+    - secret
+
+      - 암호화를 위한 무작위 문자열을 가져와서, `.env`파일에 선언해둔다.
+      - env 파일을 import 한다.
+
+        ```jsx
+        import dotenv from "dotenv";
+        // ...
+        dotenv.config();
+        ```
+
+    - resave
+    - saveUninitialized
+
+  - isAuthenticated 옵션이 이제 없으므로 header.pug 수정
+  - 테스트 후 문제 확인
+    - 서버에서 코드 수정 후 재시작하면 현재 로그인 된 사용자의 세션이 사라지는 상황. 세션을 사라지지 않도록 해야 함.
+
+### #6.5 MongoStore and Middlewares
+
+---
+
+- [connect-mongo 설치](https://www.npmjs.com/package/connect-mongo)
+- app.js 에서
+
+  - mongoose, connect-mongo를 import
+
+  ```jsx
+  const CookieStore = MongoStore(session);
+  // ...
+  app.use(
+    session({
+      secret: process.env.COOKIE_SECRET,
+      resave: true,
+      saveUninitialized: false,
+      store: new CookieStore({
+        mongooseConnection: mongoose.connection,
+      }),
+    })
+  );
+  ```
+
+- 라우트 관리
+  - 이미 로그인 된 사용자는 Join 화면으로 접근하지 못하게 하기
+  - 미들웨어를 추가해서 컨트롤러에 적절하게 넣어주면 된다.
+
+### 퀴즈
+
+---
+
+강의를 열심히 들었다면 무난하게 풀 수 있었던 문제들이었다.
