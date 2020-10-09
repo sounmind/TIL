@@ -348,3 +348,98 @@
 - 웹페이지 url 경로에 query로 다른 웹사이트 url를 입력했을 때 해당 url의 서버의 상태를 확인하는 과제이다.
   - 이전 파이썬웹스크래퍼에서도 비슷한 내용의 과제가 있어 쉽게 해결했다.
   - url에 http가 포함되어 있지 않으면 앞쪽에 `http://`를 추가해줬다.
+
+# 20-10-09 | 강의 듣기 | #6.6 ~ #6.12
+
+### #6.6 ~ 6.8 Github Log In
+
+---
+
+- passport-github 설치
+- 오류 발생
+
+  > NodeJS address already in use 문제 → 해당 포트를 이미 사용중이다.
+
+  - 서버 실행하는 데 오류가 발생해서 구글링했다.
+  - NodeJS 프로세스가 이전에 비정상적으로 종료됐을 때 나타나는 에러 메시지였다.
+  - [여기 블로그 포스팅](https://jootc.com/p/201912253249)을 참고하여 해결했다.
+
+- [passport-github strategy 공식문서](http://www.passportjs.org/packages/passport-github/)를 참고해 진행한다.
+- 인증까지 성공한다면,
+  - userController.js에서 githubLoginCallback 함수 작성
+- 테스트 중 오류 발생
+
+  > Error: Failed to serialize user into session
+
+  - [해결방법1](https://moollang.tistory.com/35) → 이메일이 private이기 때문에 public으로 바꿔줘야 함.
+    - 하지만 다른 웹사이트에서, 나는 이제까지 private 상태로 잘 가입했었는데 이상하다?!
+  - 해결방법2 → passport.js 의 `serializeUser()` 함수의 인자에 `function (user, done) { done(null, user);` 을 추가 작성한다. → 이유는 아직 모른다 ... 찾아 볼 것!!!
+
+  ```jsx
+  passport.serializeUser(function (user, done) {
+    done(null, user); // 왜 이렇게 하면 github session serialize 오류가 해결되는 것일까?
+  });
+
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
+  ```
+
+- **serialize 와 deserialize 과정을 잘 이해해야 한다.**
+  - 이 [링크](https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize)를 참고하자.
+
+### #6.9 Recap | 잠 깐 만 ~
+
+---
+
+- 깃허브 인증 과정 정리
+  1. 깃허브 버튼 클릭 → 사용자가 깃허브 웹사이트로 이동
+  2. 권한 승인 버튼 클릭 → 깃허브는 /auth/github/callback 라는 경로(passport.js의 GithubStrategy에 callbackURL로 설정)로 사용자의 정보를 보내준다.
+  3. 그렇게 되면, passportjs가 함수를 호출한다. 개발자가 사전에 설정하고 만든 함수(passport.js 의 GithubStrategy에 호출하라고 되어 있는 githubLoginCallback )이다. 이 함수의 인자로 깃허브에 등록되어 있는 사용자의 모든 정보를 받는다.
+  4. githubLoginCallback 함수는 callback(cb) 함수를 리턴해야 한다. 그 함수(cb)의 첫번째 인자는 error가 있는지 없는지 여부이고, 두번째 인자는 유저가 있는지 여부이다.
+     - 에러가 존재하거나 user가 없으면 passport는 user가 없다고 판단하고 로그인 과정을 중단한다.
+     - 에러가 없고 user가 있으면 passport는
+       1. user 정보를 받아 쿠키를 만든다.
+       2. 그 쿠키를 저장한다.
+       3. 그 저장된 쿠키를 브라우저로 보낸다.
+       4. 마지막으로 홈페이지로 redirect 된다. ( 로그인 완료 )
+
+### #6.9 User Profile | [출처 명확한 user를 찾아...](https://github.com/sounmind/youtube-clone-coding/commit/0e732380c431fb2f73ba335c04fc389df2119a7e)
+
+---
+
+- userDetail 에서는 특정 id를 가진 (로그인 된) 사용자를 찾아야 한다.
+  - /users/\${id} 보다 /users/me 로 하는 게 낫다. 왜?
+    - 사용자마다 똑같은 user template을 사용하는데, userDetail 컨트롤러 함수에서 사용자를 찾게 하기 싫어서... → **무슨 말인지 모르겠다!!!!**
+  - routes.js 에 `/me` 경로 추가, globalRouter에 미들웨어 추가, userController에 getMe 함수 추가
+  - middlewares.js 에서 `res.locals.user` → `res.locals.loggedUser` 로 변경 → user 정보를 어떻게 얻은 것인지 좀 더 명확해지도록 변경
+  - header.pug 에서 profile로 가는 링크 `/me` 로 변경
+
+### #6.10 User Detail
+
+---
+
+- /me 로만 프로필 정보에 접근할 수 있었는데, /users/:id 경로로도 프로필 페이지로 접근할 수 있도록 컨트롤러 함수를 수정했다.
+
+```jsx
+export const userDetail = async (req, res) => {
+  const {
+    params: { id }, // users/:id 의 id를 받는다.
+  } = req;
+  try {
+    const user = await User.findById(id); // id에 해당하는 user를 찾아서 userDetail 페이지에 전달한다.
+    res.render("userDetail", { pageTitle: "User Detail", user });
+  } catch (error) {
+    console.log(error);
+    res.redirect(routes.home);
+  }
+};
+```
+
+### #6.10 Facebook Login Part One
+
+---
+
+- 페이스북 인증은 강사가 어렵다고 하고, 시간도 새벽 3시 43분이라 늦었다.
+- 직접 타이핑 말고 한 번 쓱 전체 과정을 훑어보자.
+- 내일 다시 시청-실습-정리하면서 학습하자.
