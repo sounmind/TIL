@@ -335,3 +335,16 @@
 ---
 
 강의를 열심히 들었다면 무난하게 풀 수 있었던 문제들이었다.
+
+# 20-10-08 | Code Challenge | request.js, HTTP Status Code
+
+---
+
+- 필요 개념
+  - [request](https://www.npmjs.com/package/request#super-simple-to-use) 패키지
+  - [HTTP Status Code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
+  - [`toLowerCase()`](https://opentutorials.org/course/50/99)
+  - [`indexOf()`](https://opentutorials.org/course/50/89)
+- 웹페이지 url 경로에 query로 다른 웹사이트 url를 입력했을 때 해당 url의 서버의 상태를 확인하는 과제이다.
+  - 이전 파이썬웹스크래퍼에서도 비슷한 내용의 과제가 있어 쉽게 해결했다.
+  - url에 http가 포함되어 있지 않으면 앞쪽에 `http://`를 추가해줬다.
