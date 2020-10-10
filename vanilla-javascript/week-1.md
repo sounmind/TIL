@@ -339,11 +339,10 @@ function getTime() {
     );
 
   clock.innerText = `
-${day < 10 ? `0${day}` : day}d 
-${hour < 10 ? `0${hour}` : hour}h 
-${minute < 10 ? `0${minute}` : minute}m 
+${day < 10 ? `0${day}` : day}d
+${hour < 10 ? `0${hour}` : hour}h
+${minute < 10 ? `0${minute}` : minute}m
 ${second < 10 ? `0${second}` : second}s `;
-
 } // getTime() end
 
 function init() {
@@ -353,6 +352,54 @@ function init() {
 
 init();
 ```
+
+# 20-10-10 | Code Challenge | Events, localStorage
+
+---
+
+> select tag에서 option을 선택했을 때 선택한 옵션이 localStorage에 저장되어 새로고침 되어도 그 key : value 쌍이 존재할 수 있도록 만들기
+
+### 감상
+
+---
+
+무난했다!
+
+- 사용 개념
+
+  - [Document.querySelector()](https://developer.mozilla.org/ko/docs/Web/API/Document/querySelector)
+  - [How to use LocalStorage on last HTML select value](https://stackoverflow.com/questions/23905358/how-to-use-localstorage-on-last-html-select-value)
+
+    - [select tag](https://developer.mozilla.org/ko/docs/Web/API/HTMLElement/change_event)
+    - [option tag](https://developer.mozilla.org/ko/docs/Web/HTML/Element/option)
+    - `<select>.options` → 순서대로 option이 들어있는 리스트를 만든다.
+    - [HTMLSelectElement.selectedIndex](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedIndex) → 옵션에서 선택된 옵션의 색인
+    - [GlobalEventHandlers.onchange](https://developer.mozilla.org/ko/docs/Web/API/GlobalEventHandlers/onchange) → 전역 이벤트 핸들러
+      - `요소.onchange = 이벤트가 일어나면 실행할 함수`
+    - [Window.localStorage](https://developer.mozilla.org/ko/docs/Web/API/Window/localStorage) → 윈도우 지역 저장소
+      - setItem(), getItem(), removeItem(), clear()
+
+- 코드
+
+  ```jsx
+  const countrySelectOption = document.querySelector(".countrySelect");
+
+  function saveCountry(countryCode) {
+    localStorage.setItem("country", countryCode);
+  }
+
+  function setCountry() {
+    const countrySelected =
+      countrySelectOption.options[countrySelectOption.selectedIndex].value;
+    saveCountry(countrySelected);
+  }
+
+  function init() {
+    countrySelectOption.onchange = setCountry;
+  }
+
+  init();
+  ```
 
 ## 참고 자료
 
