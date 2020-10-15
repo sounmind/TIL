@@ -115,3 +115,30 @@ Oct 12, 2020 6:24 PM 오늘은 아마 여기까지
 ---
 
 - 실습한 것을 토대로 비디오 플레이어를 만드는 과제였다. 실습에서 더 추가된 것은 스페이스 바를 누르면 재생이 되어야 하고, 영상이 끝에 도달했을 때 다시 처음부터 재생이 되어야 했다. 그리고 가장 주의해서 해야 했던 기능은 화면에 커서를 가져다 대면 비디오 컨트롤러가 나타난 다음, 마우스를 비디오 플레이어 위에서 일정 시간 움직이지 않으면 비디오 컨트롤러가 사라지도록 구현해야 했다.
+
+# 20-10-14 | Code Challenge | Voice Recorder
+
+---
+
+- 과제 조건
+    - 강의에서 배운 것과 기본적으로 유사함. 다른 것은 카메라를 녹화하는 것이 아니라, 마이크 녹음하는 것이다. 그리고 녹음 진행 시간이 화면에 표시되어야 한다. 녹화 시 내부 함수에서 async/await를 사용하지 않고 코드를 작성해야 하며,  record 시 특정한 데이터 type을 지정해줘야 한다.
+- 필요개념
+    - [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
+
+        > The `MediaStream` interface represents a stream of media content. A stream consists of several tracks such as video or audio tracks. Each track is specified as an instance of `MediaStreamTrack`. You can obtain a MediaStream object either by using the constructor or by calling `MediaDevices.getUserMedia()`
+
+    - [MediaDevices](https://developer.mozilla.org/ko/docs/Web/API/MediaDevices) → 사용자의 기기(마이크, 카메라)에 접근할 수 있게 해주는 API
+        - [MediaDevices.getUserMedia()](https://developer.mozilla.org/ko/docs/Web/API/MediaDevices/getUserMedia)
+    - [HTMLMediaElement.srcObject](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject) → HTMLMediaElement에 연관된 미디어 소스 객체를 반환한다. 이 객체는 MediaStream, MediaSource, Blob, File이 될 수도 있다. → Blob은 뭐야?
+    - [Blob](https://heropy.blog/2019/02/28/blob/)
+
+        > JavaScript에서 Blob(Binary Large Object, 블랍)은 이미지, 사운드, 비디오와 같은 멀티미디어 데이터를 다룰 때 사용할 수 있습니다.
+        대개 데이터의 크기(Byte) 및 MIME 타입을 알아내거나, 데이터를 송수신을 위한 작은 Blob 객체로 나누는 등의 작업에 사용합니다.
+
+    - [MediaRecorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) interface
+        - [MediaRecorder(stream[, options])](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/MediaRecorder) constructor
+            - option에서 Record할 때의 데이터의 속성을 설정할 수 있다.
+        - MediaRecorder.ondataavailable → Record가 시작하고 멈출 때, 또는 일정 시간 간격 때마다 발생하는 이벤트
+    - setInterval(), clearInterval() → setInterval
+    - [Promise](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [소스 코드 링크](https://codesandbox.io/s/20-10-14-youtube-clone-voice-recording-blueprint-forked-6m5fk?file=/src/index.js)
