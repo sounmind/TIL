@@ -142,3 +142,184 @@ Oct 12, 2020 6:24 PM 오늘은 아마 여기까지
     - setInterval(), clearInterval() → setInterval
     - [Promise](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 - [소스 코드 링크](https://codesandbox.io/s/20-10-14-youtube-clone-voice-recording-blueprint-forked-6m5fk?file=/src/index.js)
+
+
+# 2020-10-16 | Code Challenge | Geolocation
+
+---
+
+## #10 API + AJAX
+
+---
+
+### 조회수 등록을 위한 Ajax 기능 추가
+
+---
+
+> 어떻게 웹 사이트의 특정 부분만 갱신되도록 할 것인가?
+
+- 랜더링하지 않고, 어떤 동작을 하고, http status code로 답해주는 것을 만들어야 한다.
+    - 라우트, 라우터, 컨트롤러 추가 → 즉, URL 경로로 들어간다는 것이 곧 새로운 페이지를 의미하는 것은 아니다.
+    - **[URL에 대한 위키백과 설명](https://ko.wikipedia.org/wiki/URL)**
+        - 네트워크 상에서 자원이 어디 있는지를 알려주기 위한 규약.
+        - 컴퓨터 네트워크와 검색 메커니즘에서의 위치를 지정하는, 웹 리소스에 대한 참조.
+        - 흔히 웹 사이트 주소로 알고 있지만, 뿐만 아니라 컴퓨터 네트워크 상의 자원을 모두 나타낼 수 있다.
+        - 하지만, 그 주소에 접속하려면 해당 URL에 맞는 프로토콜을 알아야 하고, 그와 동일한 프로토콜로 접속해야 한다.
+
+> 프론트엔드, 클라이언트 단에서는 어떻게 해야 할까?
+
+- 수동으로 httprequest 다루는 방법 → fetch()
+- fetch 안에 URL을 입력하면 실제 그 URL로 가서 요청하는 것과 똑같음.
+- axios 라이브러리 다운로드
+
+    > 좀 더 fancy한 fetch 기능 제공
+
+    - status code
+
+    ```jsx
+    // assets/js/addComment.js
+
+    import axios from "axios";
+
+    // ...
+
+    const sendComment = async (comment) => {
+      const videoId = window.location.href.split("/videos/")[1];
+      const response = await axios({
+        url: `/api/${videoId}/comment`,
+        method: "POST",
+        data: {
+          comment,
+        },
+      });
+    	console.log(response);
+      /* 아래와 같이 출력된다.
+      ...
+      ...
+      config:
+        adapter: ƒ xhrAdapter(config)
+        data: "{"comment":"asdasd"}"
+      ...
+      ...
+      */
+      if (response.status === 200) {
+        addComment(comment);
+      }
+    };
+
+    // ...
+    ```
+
+    ```jsx
+    // console.log(response); 결과
+
+    {data: "", status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+    config:
+    adapter: ƒ xhrAdapter(config)
+    data: "{"comment":"asdasd"}"
+    headers: {Accept: "application/json, text/plain, */*", Content-Type: "application/json;charset=utf-8"}
+    maxBodyLength: -1
+    maxContentLength: -1
+    method: "post"
+    timeout: 0
+    transformRequest: [ƒ]
+    transformResponse: [ƒ]
+    url: "/api/5f85d70006299339881a92a9/comment"
+    validateStatus: ƒ validateStatus(status)
+    xsrfCookieName: "XSRF-TOKEN"
+    xsrfHeaderName: "X-XSRF-TOKEN"
+    __proto__: Object
+    data: ""
+    headers: {connection: "keep-alive", content-length: "0", date: "Fri, 16 Oct 2020 20:02:32 GMT", expect-ct: "max-age=0", referrer-policy: "no-referrer", …}
+    request: XMLHttpRequest {readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, onreadystatechange: ƒ, …}
+    status: 200
+    statusText: "OK"
+    __proto__: Object
+    ```
+
+> 데이터베이스를 바꾸려면 POST, 바꾸지 않아도 된다면 GET 방식으로 URL를 얻는다.
+
+### 댓글 기능 만들기
+
+---
+
+- 댓글 등록을 위한 라우트, 라우터를 만든다.
+- 경로로 POST 방식으로 요청이 들어올 때 실행할 컨트롤러를 만든다.
+
+    ```jsx
+    // Add Comment 댓글 등록
+
+    export const postAddComment = async (req, res) => {
+      const {
+        params: { id },
+        body: { comment },
+        user,
+      } = req;
+
+      try {
+        const video = await Video.findById(id);
+        const newComment = await Comment.create({
+          text: comment,
+          creator: user.id,
+        });
+        video.comments.push(newComment.id); // 댓글의 id를 푸시. 나중에 populate로 id를 오브젝트로 확장시킨다.
+        video.save();
+      } catch (error) {
+        console.log(error);
+        res.status(400);
+      } finally {
+        res.end();
+      }
+    };
+    ```
+
+- request의 user 정보,  body 에 들어 있는 comment 내용, 파라미터로 받아온 id 로 해당 video를 찾아 comment 리스트에 코멘트의 id를 push 해준다. 마지막으로 과정에서 오류가 일어난다면 400, 성공한다면 res.end()해줘서 응답을 끝낸다. 즉, 새로운 화면을 render 하지 않는다.
+
+> 실제 프론트 화면에서도 실시간으로 변화를 보여줘야 한다. 그 방법은 자바스크립트!
+
+- 댓글이 submit 되면 comment를 api URL로 post 방식으로 보내고 그 response가 200으로 성공이라면, addComment() 함수를 실행한다. 이 함수에서는 실제 화면에서 보여질 댓글을 html으로 만들어 출력한다.
+
+```jsx
+const increaseNumber = () => {
+  commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
+};
+
+const addComment = (comment) => {
+  const li = document.createElement("li");
+  const span = document.createElement("span");
+  span.innerHTML = comment;
+  li.appendChild(span);
+  commentList.prepend(li); // 가장 최신 것이 위로 오도록 추가
+  increaseNumber();
+};
+
+const sendComment = async (comment) => {
+	
+	// ...
+	
+  if (response.status === 200) {
+    addComment(comment);
+  }
+};
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const commentInput = addCommentFrom.querySelector("input");
+  const comment = commentInput.value;
+  sendComment(comment);
+  commentInput.value = "";
+};
+
+function init() {
+  addCommentFrom.addEventListener("submit", handleSubmit);
+}
+```
+
+### 과제 후기
+
+---
+
+- 과제 내용
+    - 현재 ip에 대한 주소 정보가 주어지는 특정 API URL를 FETCH 하여 받아온 JSON을 가공하여 화면에 출력하면 되는 간단한 문제였다.
+- 후기
+    - 웹의 세계는 무궁무진하고 그 방식도 참신하다. URL를 막연히 웹페이지 주소 정보로만 알고 있다가, 오늘 새삼스레 모든 웹 자원의 주소라는 것을 깨달았다. 멋지고 두근거린다! 앞으로 할 것들도 너무 기대된다. 새로운 배움에 세상을 좀 더 이해하고 나 스스로 성장할 수 있다고 생각하니 눈물이 날 것만 같다. 가끔 욕 나올 만큼 힘들지만, 난 이 일이 참 좋다.
