@@ -1,6 +1,17 @@
 # TIL (Today I Learned)
 - since 2020-07-18
-## Comments
-- 2020-09-17
-  - Javascript folder added
-  - 점점 TIL 보다는 repositorty, folder 별로 올리게 된다.
+
+## Directory
+
+- `[Subject`] | `[Based On`]
+- Clean Code | Book
+- Computer Science | Lecture
+- Data Structure | Book, Lecture
+- Database | Book
+- Django
+- You don't know JS | Book
+- Notion.so
+- Operating System
+- Test-Driven Development by example | Book
+- VanillaJS | NomadCoder
+- Youtube Clone | NomadCoder
