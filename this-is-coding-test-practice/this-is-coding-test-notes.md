@@ -116,7 +116,7 @@
 
                 위 코드는 전체 리스트 안에 포함된 각 리스트가 모두 같은 객체로 인식된다.
 
-                ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png)
+                ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201030%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201030T182042Z&X-Amz-Expires=86400&X-Amz-Signature=1095cecaea1a16bfbe6252ad3a00996024120638ac0c312fa39e5dd55d1964bd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
 
     - 언더바는 언제 사용하는가?
         - 파이썬에서는 반복을 수행하되 반복을 위한 변수의 값을 무시하고자 할 때 언더바(_)를 자주 사용한다.
