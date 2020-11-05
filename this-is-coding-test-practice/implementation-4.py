@@ -1,12 +1,17 @@
 string = input()
-answer = ""
+
+answer = []
 sum = 0
-array = sorted(list(string))
 
-for i in array:
-    try:
+for i in string:
+    if i.isalpha():
+        answer.append(i)
+    else:
         sum += int(i)
-    except:
-        answer += i
 
-print(answer + str(sum))
+answer.sort()
+
+if sum != 0:
+    answer.append(str(sum))
+
+print("".join(answer))
