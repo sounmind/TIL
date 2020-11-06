@@ -22,6 +22,7 @@ graph = []
 for i in range(n):
     graph.append(list(map(int, input())))
 
+result = 0
 # 모든 노드(위치)에 음료 채우기
 for i in range(n):
     for j in range(m):
