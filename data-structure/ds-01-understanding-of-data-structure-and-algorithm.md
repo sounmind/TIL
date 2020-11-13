@@ -57,3 +57,101 @@
 우리가 선택할 자료구조와 알고리즘이 잘 동작하는 것은 물론이거니와 좋은 성능까지 보장받기를 원하기 때문에, 우리는 자료구조와 알고리즘을 분석하고 평가할 수 있어야 한다. 
 
 알고리즘을 평가하는 두 가지 요소는 다음과 같이 정리할 수 있다.
+
+> 어떤 알고리즘이 어떠한 상황에서 더 빠르고 또 느리냐?
+
+> 어떤 알고리즘이 어떠한 상황에서 메모리를 적게 쓰고 또 많이 쓰냐?
+
+- 하나는 **'속도'**에 관한 것이고 다른 하나는 **'메모리의 사용량'**에 관한 것인데, 속도에 해당하는 알고리즘의 수행시간 분석결과를 가리켜 **'시간 복잡도'**라 하고, 메모리 사용량에 대한 분석결과를 가리켜 **'공간 복잡도'**라 한다.
+- 이진 탐색 알고리즘을 구현해보자!
+
+    ```c
+    #include <stdio.h>
+
+    int BSearch(int array[], int len, int target)
+    {
+        int first = 0;      // 탐색 대상의 시작 인덱스 값
+        int last = len - 1; // 탐색 대상의 마지막 인덱스 값
+        int mid;
+
+        while (first <= last) // 배열의 처음이 마지막 보다 작거나 같을 때
+        {
+            mid = (first + last) / 2; // 탐색 대상의 중앙을 찾는다
+            if (target == array[mid]) // 중앙에 저장된 것이 타겟이라면
+            {
+                return mid; // 탐색 완료!
+            }
+            else // 타겟이 아니라면 탐색 대상을 반으로 줄이기
+            {
+                if (target < array[mid])
+                    last = mid - 1; // 왜 -1을 하였을까? -> 타겟이 중앙값보다 작기 때문에 탐색하려는 배열의 마지막을 중앙값의 이전 값으로 변경
+                else
+                    first = mid + 1; // 왜 +1을 하였을까? -> 타겟이 중앙값보다 크기 때문에 탐색하려는 배열의 처음을 중앙값 오른쪽으로 다시 설정
+            }
+        }
+        return -1; // 찾지 못했을 때 반환되는 값
+    }
+
+    int main(void)
+    {
+        int arr[] = {1, 3, 5, 7, 9};
+        int idx;
+
+        idx = BSearch(arr, sizeof(arr) / sizeof(int), 7);
+        if (idx == -1)
+            printf("탐색 실패\n");
+        else
+            printf("타겟 저장 인덱스: %d \n", idx);
+
+        idx = BSearch(arr, sizeof(arr) / sizeof(int), 4);
+        if (idx == -1)
+            printf("탐색 실패\n");
+        else
+            printf("타겟 저장 인덱스: %d \n", idx);
+
+        return 0;
+    }
+    ```
+
+# 2. 재귀
+
+- 이진탐색을 재귀함수로!
+
+    ```c
+    #include <stdio.h>
+
+    int BSearchRecur(int ar[], int first, int last, int target)
+    {
+        int mid;
+        if (first > last) // -1의 반환은 탐색의 실패를 의미
+            return -1;    // 탐색 대상의 중앙을 찾는다
+        mid = (first + last) / 2;
+
+        if (ar[mid] == target)
+            return mid; // 탐색된 타겟의 인덱스 값 반환
+        else if (target < ar[mid])
+            return BSearchRecur(ar, first, mid - 1, target);
+        else
+            return BSearchRecur(ar, mid + 1, last, target);
+    }
+
+    int main(void)
+    {
+        int arr[] = {1, 3, 5, 7, 9};
+        int idx;
+
+        idx = BSearchRecur(arr, 0, sizeof(arr) / sizeof(int) - 1, 7);
+        if (idx == -1)
+            printf("탐색 실패 \n");
+        else
+            printf("타겟 저장 인덱스: %d \n", idx);
+
+        idx = BSearchRecur(arr, 0, sizeof(arr) / sizeof(int) - 1, 4);
+        if (idx == -1)
+            printf("탐색 실패 \n");
+        else
+            printf("타겟 저장 인덱스: %d \n", idx);
+
+        return 0;
+    }
+    ```
