@@ -116,13 +116,9 @@
 
                 위 코드는 전체 리스트 안에 포함된 각 리스트가 모두 같은 객체로 인식된다.
 
-                ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/9c034a3f-cdcd-4dbb-bf22-4a7c33c199dc/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201030%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201030T182042Z&X-Amz-Expires=86400&X-Amz-Signature=1095cecaea1a16bfbe6252ad3a00996024120638ac0c312fa39e5dd55d1964bd&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
-
     - 언더바는 언제 사용하는가?
         - 파이썬에서는 반복을 수행하되 반복을 위한 변수의 값을 무시하고자 할 때 언더바(_)를 자주 사용한다.
     - 리스트 관련 기타 메서드
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cd7f43e-6021-4582-9874-515c26a21eea/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7cd7f43e-6021-4582-9874-515c26a21eea/Untitled.png)
 
     - 리스트에서 특정 값을 가지는 원소를 모두 제거하기
 
@@ -245,7 +241,6 @@
 
     - 다른 프로그래밍 언어와 다르게 파이썬은 조건문 안에서 수학의 부등식을 그대로 사용할 수 있다.
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1bb7ecac-44e7-403b-b8c9-d5247aedf036/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1bb7ecac-44e7-403b-b8c9-d5247aedf036/Untitled.png)
 
     ## 반복문
 
@@ -306,39 +301,20 @@
 
         > 매개변수에 어떻게 대입이 되는 것인지 잘 모르겠다...
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7eac3ca7-afe9-4931-90ab-645ea5752032/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7eac3ca7-afe9-4931-90ab-645ea5752032/Untitled.png)
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a30cca62-5ed4-4e88-b427-b68bb6b8b787/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a30cca62-5ed4-4e88-b427-b68bb6b8b787/Untitled.png)
-
     ## 실전에서 유용한 표준 라이브러리
 
     ---
 
     - 내장 함수: 기본 입출력 함수부터 정렬 함수까지 기본적인 함수들을 제공한다. 파이썬 프로그램을 작성할 때 없어서는 안 되는 필수적인 기능을 포함하고 있다.
-        - 예
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dd0a884a-04a5-44b3-b307-200020b1412a/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dd0a884a-04a5-44b3-b307-200020b1412a/Untitled.png)
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cdd93d55-27e0-418b-b69c-fdb3b52cd4d6/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cdd93d55-27e0-418b-b69c-fdb3b52cd4d6/Untitled.png)
 
     - itertools: 파이썬에서 반복되는 형태의 데이터를 처리하기 위한 유용한 기능들을 제공한다. 특히 **순열과 조합** 라이브러리는 코딩 테스트에서 자주 사용된다. **중복순열과 중복조합**도 있다!
-        - 예
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/228ec4d5-759e-48d8-941d-fcb54a5d66f2/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/228ec4d5-759e-48d8-941d-fcb54a5d66f2/Untitled.png)
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ec67e5c-60b0-4b84-8049-17086aace8aa/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3ec67e5c-60b0-4b84-8049-17086aace8aa/Untitled.png)
 
     - heapq: 힙(Heap) 자료구조를 제공한다. 일반적으로 우선순위 큐 기능을 구현하기 위해 사용된다.
     - bisect: 이진 탐색(Binary Search) 기능을 제공한다.
     - collections: 덱(deque), 카운터(Counter) 등의 유용한 자료구조를 포함한다.
-        - 예
-
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f18effb0-c739-4201-bfdf-64996ab6f7e1/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f18effb0-c739-4201-bfdf-64996ab6f7e1/Untitled.png)
 
     - math: 필수적인 수학적 기능을 제공한다. 팩토리얼, 제곱근, 최대공약수(GCD), 삼각함수 관련 함수부터 파이(pi)와 같은 상수를 포함한다.
-        - 예
 
-            ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d89b3b0c-1fae-47cd-b168-b04b4d31b8d5/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d89b3b0c-1fae-47cd-b168-b04b4d31b8d5/Untitled.png)
 
 - 그리디 & 구현
 
@@ -360,27 +336,6 @@
 
         - 시간복잡도 분석
             - 화폐의 종류만큼 반복이 수행되므로 시간 복잡도는 O(N)이다.
-    - 문제2 | 1이 될 때까지
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2f924181-9efa-4f2f-99fa-411ca54704ad/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/2f924181-9efa-4f2f-99fa-411ca54704ad/Untitled.png)
-
-    - 문제3 | 곱하기 혹은 더하기
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/55cd31b3-f6d5-426d-84b3-4920d61cb4f3/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/55cd31b3-f6d5-426d-84b3-4920d61cb4f3/Untitled.png)
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f25f931-52ae-43a0-9a33-859578d5e13b/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f25f931-52ae-43a0-9a33-859578d5e13b/Untitled.png)
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/24641566-2f39-4c67-ad2b-b3bc71d9ccfc/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/24641566-2f39-4c67-ad2b-b3bc71d9ccfc/Untitled.png)
-
-    - 문제4 | 모험가 길드
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ee06f8c0-4b68-4ff0-ba56-7304f1728e92/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ee06f8c0-4b68-4ff0-ba56-7304f1728e92/Untitled.png)
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d836a938-34ea-4575-a94e-6eb72e15c1e5/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d836a938-34ea-4575-a94e-6eb72e15c1e5/Untitled.png)
-
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/df9b6a76-1c22-4d1d-a872-b8b62eecb84b/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/df9b6a76-1c22-4d1d-a872-b8b62eecb84b/Untitled.png)
-
-        나머지는 마을에 그대로 남아 있어도 된다! 그래서 나머지는 신경 안 써도 된다!
 
     # 구현
 
@@ -395,26 +350,56 @@
     - 일반적으로 알고리즘 문제에서의 2차원 공간은 **행렬**(Matrix)의 의미로 사용된다.
     - 시뮬레이션 및 완전 탐색 문제에서는 2차원 공간에서의 **방향 벡터**가 자주 활용된다.
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/76f75c95-b476-4c46-b4d9-f9b0a736dc56/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/76f75c95-b476-4c46-b4d9-f9b0a736dc56/Untitled.png)
+- DFS / BFS
+    # 그래프 탐색 알고리즘: DFS
 
-    - 문제1 상하좌우
+    ---
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4714f8aa-4651-4582-b164-7d783f5cb516/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4714f8aa-4651-4582-b164-7d783f5cb516/Untitled.png)
+    - 탐색이란 많은 양의 데이터 중에서 원하는 데이터를 찾는 과정을 말한다
+    - 대표적 그래프 탐색 알고리즘으로는 DF BFS가 있다.
+    - DFS/BFS는 코딩테스트에서 매우 자주 등장하는 유형이므로 반드시 숙지해야 한다.
 
-        - 문제의 아이디어는
-            - 열
-                - 왼쪽
-                - 오른쪽
-            - 행
-                - 위로
-                - 아래로
+    ## 스택 자료구조
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c0d53bad-aed0-41ea-a9a1-4cf42e925f05/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c0d53bad-aed0-41ea-a9a1-4cf42e925f05/Untitled.png)
+    - 먼저 들어온 데이터가 나중에 나가는 형식의 자료구조
+    - 입구와 출구가 동일한 형태로 스택을 시각화할 수 있다
+    - 갑자기 뜬 금 없 이 알게 된 파이썬 리스트 거꾸로 출력 **[방법](https://itholic.github.io/python-reverse-string/) → 꼭 익히자!**
 
-    ## 구현 문제 풀이
+    ## 큐 자료구조
 
-    - 문제2 시각
+    - 먼저 들어 온 데이터가 먼저 나가는 형식의 자료구조입니다.
+    - 큐는 입구와 출구가 모두 뚫려 있는 터널과 같은 형태로 시각화 할 수 있다.
+    - 큐를 구현할 때 꼭 deque를 import해서 사용하자!
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/36e8c3a5-51f8-4d79-bda6-ca4c71d825bd/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/36e8c3a5-51f8-4d79-bda6-ca4c71d825bd/Untitled.png)
+    ## 재귀 함수
 
-        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/df357cd2-47c8-4a08-b168-9d5580557a76/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/df357cd2-47c8-4a08-b168-9d5580557a76/Untitled.png)
+    - 자기 자신을 다시 호출하는 함수
+    - 재귀 함수를 문제 풀이에서 사용할 때는 재귀 함수의 종료 조건을 반드시 명시해야 한다. 종료 조건을 제대로 명시하지 않으면 함수가 무한히 호출 될 수 있다.
+
+    ```jsx
+    def gcd(a, b):
+        if a % b == 0:
+                    return b
+            else:
+                    return gcd(b, a % b)
+    ```
+
+    - 컴퓨터가 함수를 연속적으로 호출하면 컴퓨터 메모리 내부의 스택 프레임에 쌓인다. **그래서 스택을 사용해야 할 때 구현상 스택 라이브러리 대신에 재귀 함수를 이용하는 경우가 많다.**
+
+    ## DFS
+
+    - 깊이 우선 탐색, 깊은 부분을 우선적으로 탐색하는 알고리즘
+    - 스택 자료구조(혹은 재귀 함수)를 이용한다.
+    - 동작 과정 **→ 무슨 말인지 모르겠다!!!**
+        1. 탐색 시작 노드를 스택에 삽입하고 방문 처리를 한다.
+        2. 스택의 최상단 노드에 방문하지 않은 인접한 노드가 하나라도 있으면 그 노드를 스택에 넣고 방문 처리한다. 방문하지 않은 인접 노드가 없으면 스택에서 최상단 노드를 꺼낸다.
+        3. 더 이상 2번의 과정을 수행할 수 없을 때까지 반복한다.
+
+    ## BFS
+    - 너비 우선 탐색, 가까운 노드부터 우선적으로 탐색하는 알고리즘
+    - 큐 자료구조를 이용한다.
+    - 동작 과정
+        1. 탐색 시작 노드를 큐에 삽입하고 방문 처리를 한다.
+        2. 큐에서 노드를 꺼낸 뒤에 해당 노드의 인접 노드 중에서 방문하지 않은 노드를 모두 큐에 삽입하고 방문 처리한다.
+        3. 더 이상 2번의 과정을 수행할 수 없을 때까지 반복한다.
+    - **거리 당 비용이 동일한 최단 거리 문제에 활용될 수 있다.**
