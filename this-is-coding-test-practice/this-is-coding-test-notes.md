@@ -403,3 +403,183 @@
         2. 큐에서 노드를 꺼낸 뒤에 해당 노드의 인접 노드 중에서 방문하지 않은 노드를 모두 큐에 삽입하고 방문 처리한다.
         3. 더 이상 2번의 과정을 수행할 수 없을 때까지 반복한다.
     - **거리 당 비용이 동일한 최단 거리 문제에 활용될 수 있다.**
+
+# 정렬 알고리즘
+- 정렬이란 데이터를 특정한 기준에 따라 순서대로 나열하는 것을 말한다.
+- 일반적으로 문제 상황에 따라 적절한 정렬 알고리즘이 공식처럼 사용된다.
+
+## 선택 정렬
+
+```python
+# 선택 정렬 교재 예시
+
+array = [7, 5, 9, 0, 1, 6, 2, 4, 8]
+# i번째 요소를 그 이후 요소의 최솟값과 교체한다.
+for i in range(len(array)):
+    min_index = i  # 가장 작은 원소의 인덱스
+    for j in range(i + 1, len(array)):  # 나머지 요소 중 최솟값 찾기
+        if array[min_index] > array[j]:
+            min_index = j
+    array[i], array[min_index] = array[min_index], array[i]  # 값 서로 바꾸기
+    print(array)
+
+# 실행결과
+# [0, 5, 9, 7, 1, 6, 2, 4, 8]
+# [0, 1, 9, 7, 5, 6, 2, 4, 8]
+# [0, 1, 2, 7, 5, 6, 9, 4, 8]
+# [0, 1, 2, 4, 5, 6, 9, 7, 8]
+# [0, 1, 2, 4, 5, 6, 9, 7, 8]
+# [0, 1, 2, 4, 5, 6, 9, 7, 8]
+# [0, 1, 2, 4, 5, 6, 7, 9, 8]
+# [0, 1, 2, 4, 5, 6, 7, 8, 9]
+# [0, 1, 2, 4, 5, 6, 7, 8, 9]
+```
+
+- 선택 정렬은 N번 만큼 가장 작은 수를 찾아서 맨 앞으로 보내야 한다.
+- 구현 방식에 따라 사소한 오차는 있을 수 있지만, 전체  연산 횟수는 다음과 같다.
+
+    > N + (N-1) + (N-2) + ... + 2
+
+- 이는 $(N^2+N-2)/2$로 표현할 수 있는데, 빅오 표기법에 따라 $O(N^2)$이라고 작성한다.
+
+## 삽입 정렬
+
+- 처리되지 않은 데이터를 하나씩 골라 적절한 위치에 삽입한다.
+- 선택 정렬에 비해 구현 난이도가 높은 편이지만, 일반적으로 더 효율적으로 동작한다.
+
+```python
+# 삽입 정렬
+array = [7, 5, 9, 0, 1, 6, 2, 4, 8]
+
+# i번째 요소를 그 이전의 모든 요소와 비교하여 작으면 교체하고, 크면 그대로 둔다.
+for i in range(1, len(array)):
+    for j in range(i, 0, -1):  # 인덱스 i부터 1까지 1씩 감소
+        if array[j] < array[j - 1]:  # j번째 요소가 그 이전 요소보다 작다면
+            array[j], array[j - 1] = array[j - 1], array[j]  # 서로 교체
+            print(i, array)
+        else:  # 작지 않다면 그대로 두고 다음 요소로 넘어감
+            break
+
+# 출력 결과 (교체될 때만)
+# 1 [5, 7, 9, 0, 1, 6, 2, 4, 8]
+# 3 [5, 7, 0, 9, 1, 6, 2, 4, 8]
+# 3 [5, 0, 7, 9, 1, 6, 2, 4, 8]
+# 3 [0, 5, 7, 9, 1, 6, 2, 4, 8]
+# 4 [0, 5, 7, 1, 9, 6, 2, 4, 8]
+# 4 [0, 5, 1, 7, 9, 6, 2, 4, 8]
+# 4 [0, 1, 5, 7, 9, 6, 2, 4, 8]
+# 5 [0, 1, 5, 7, 6, 9, 2, 4, 8]
+# 5 [0, 1, 5, 6, 7, 9, 2, 4, 8]
+# 6 [0, 1, 5, 6, 7, 2, 9, 4, 8]
+# 6 [0, 1, 5, 6, 2, 7, 9, 4, 8]
+# 6 [0, 1, 5, 2, 6, 7, 9, 4, 8]
+# 6 [0, 1, 2, 5, 6, 7, 9, 4, 8]
+# 7 [0, 1, 2, 5, 6, 7, 4, 9, 8]
+# 7 [0, 1, 2, 5, 6, 4, 7, 9, 8]
+# 7 [0, 1, 2, 5, 4, 6, 7, 9, 8]
+# 7 [0, 1, 2, 4, 5, 6, 7, 9, 8]
+# 8 [0, 1, 2, 4, 5, 6, 7, 8, 9]
+```
+
+- 삽입 정렬의 시간 복잡도는 $O(N^2)$이며, 선택 정렬과 마찬가지로 반복문이 두 번 중첩되어 사용된다.
+- 삽입 정렬은 현재 리스트의 데이터가 **거의 정렬되어 있는 상태**라면 매우 빠르게 동작한다.
+    - 최선의 경우, O(N)의 시간 복잡도를 가진다.
+    - 이미 정렬되어 있는 상태에서 다시 삽입 정렬을 수행하면? → 반복문을 한 번만 사용하게 됨.
+
+## 퀵 정렬
+
+- 기준 데이터를 설정하고 그 **기준보다 큰 데이터와 작은 데이터의 위치를 바꾸는 방법**
+- 일반적인 가장 많이 사용되는 정렬 알고리즘 중 하나.
+- 병합 정렬과 더불어 대부분의 프로그래밍 언어의 정렬 라이브러리의 근간이 되는 알고리즘
+- 가장 기본적인 퀵 정렬은 **첫 번째 데이터를 기준 데이터(Pivot)**로 설정한다.
+- 동작 예시
+    - 왼쪽에서부터 기준 데이터(첫 번째 데이터)보다 큰 값, 오른쪽에서부터 기준 데이터보다 작은 값을 골라 위치를 바꾼다.
+    - 반복한다.
+    - **위치가 엇갈리는 경우 '피벗(기준 데이터)'과 '작은 데이터'의 위치를 서로 변경한다. 이것을 분할이라고 한다.**
+
+        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cd01af6f-1d04-439a-a60c-5c90b8248e12/Untitled.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd01af6f-1d04-439a-a60c-5c90b8248e12/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201116T170122Z&X-Amz-Expires=86400&X-Amz-Signature=a067db4014634ac9e0722b90016f24f39dc3cca816deffeca55d0829c58ad4d3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+
+    - **분할이 완료되면, 피벗의 왼쪽에 있는 데이터는 모두 피벗보다 작고, 오른쪽에 있는 데이터는 모두 피벗보다 크다.**
+
+        ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0bf05f07-9d91-4b7c-89a2-367d6a5bc4fe/Untitled.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/0bf05f07-9d91-4b7c-89a2-367d6a5bc4fe/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201116T170108Z&X-Amz-Expires=86400&X-Amz-Signature=f67013eddacd335b443abef31dd04baa9906786691400a61a7bdec1847197ba1&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+
+    - 피벗 왼쪽에 있는 배열, 오른쪽에 있는 배열에 모두 퀵 정렬을 수행한다.
+
+    ### 퀵 정렬이 빠른 이유
+
+    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1cb5e2d8-988c-4cd4-82a3-2f5816e003ff/Untitled.png](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/1cb5e2d8-988c-4cd4-82a3-2f5816e003ff/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20201116%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201116T170045Z&X-Amz-Expires=86400&X-Amz-Signature=afeb86338c0d92c7a2860384a671b2d2157ef3cb1d0c2f8946d650224b3dcee1&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22)
+
+    - 퀵 정렬은 평균의 경우 $O(NlogN)$의 시간 복잡도를 가진다.
+    - 하지만 최악의 경우 $O(N^2)$의 시간 복잡도를 가진다.
+        - 이미 정렬된 배열에 퀵 정렬을 수행할 때와 같다.
+
+    ```python
+    # 퀵 정렬
+    array = [7, 5, 9, 0, 1, 6, 2, 4, 8]
+
+    def quick_sort(array, start, end):
+        if start >= end:  # 원소가 1개인 경우 종료
+            return
+        pivot = start  # 피벗(기준 데이터)은 첫 번째 원소
+
+        # 탐색을 시작하는 (피벗 다음) 왼쪽 끝 원소,
+        # 탐색이 끝나면 피벗보다 큰 데이터의 인덱스를 저장된다.
+        left = start + 1
+
+        # 탐색이 끝나면 피벗보다 작은 데이터의 인덱스가 저장된다.
+        right = end
+        while left <= right:  # 왼쪽 끝 원소가 오른쪽 끝 원소보다 작거나 같을 때 반복
+            # 피벗보다 큰 데이터를 찾을 때까지 반복
+            while left <= end and array[left] <= array[pivot]:
+                left += 1
+            # 피벗보다 작은 데이터를 찾을 때까지 반복
+            while right > start and array[right] >= array[pivot]:
+                right -= 1
+            if left > right:  # 엇갈렸다면 작은 데이터와 피벗을 교체
+                array[right], array[pivot] = array[pivot], array[right]
+                print("분할!", end=" ")
+            else:  # 엇갈리지 않았다면 작은 데이터와 큰 데이터를 교체
+                array[left], array[right] = array[right], array[left]
+            print(array)
+        # 분할 이후 왼쪽 부분과 오른쪽 부분에서 각각 정렬 수행
+        quick_sort(array, start, right - 1)
+        quick_sort(array, right + 1, end)
+
+    quick_sort(array, 0, len(array) - 1)
+
+    # 출력 결과
+    # [7, 5, 4, 0, 1, 6, 2, 9, 8]
+    # 분할! [2, 5, 4, 0, 1, 6, 7, 9, 8]
+    # [2, 1, 4, 0, 5, 6, 7, 9, 8]
+    # [2, 1, 0, 4, 5, 6, 7, 9, 8]
+    # 분할! [0, 1, 2, 4, 5, 6, 7, 9, 8]
+    # 분할! [0, 1, 2, 4, 5, 6, 7, 9, 8]
+    # 분할! [0, 1, 2, 4, 5, 6, 7, 9, 8]
+    # 분할! [0, 1, 2, 4, 5, 6, 7, 9, 8]
+    # 분할! [0, 1, 2, 4, 5, 6, 7, 8, 9]
+    ```
+
+    ### 파이썬의 장점을 살려 간결하게 작성한 퀵 정렬 소스코드
+
+    ```python
+    # 파이썬의 장점을 살려 간결하게 작성한 퀵 정렬 소스코드
+    array = [7, 5, 9, 0, 1, 6, 2, 4, 8]
+
+    def quick_sort(array):
+        # 리스트의 원소가 하나 이하라면 종료
+        if len(array) <= 1:
+            return array
+        pivot = array[0]  # 피벗은 첫 번째 원소
+        tail = array[1:]  # 피벗을 제외한 리스트
+
+        # 피벗보다 작은 요소만 담긴 리스트 (피벗을 포함)
+        left_side = [x for x in tail if x <= pivot]
+        # 피벗보다 큰 요소만 담긴 리스트
+        right_side = [x for x in tail if x > pivot]
+        # 분할 완료
+
+        # 분할 이후 왼쪽과 오른쪽 리스트에 각각 퀵정렬 수행하고, 전체 리스트 반환
+        return quick_sort(left_side) + [pivot] + quick_sort(right_side)
+
+    print(quick_sort(array))
+    ```
